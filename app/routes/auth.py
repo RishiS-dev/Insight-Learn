@@ -21,9 +21,13 @@ def register_user(user: UserRegister):
     cur = conn.cursor()
     cur.execute("SELECT * FROM users WHERE email = %s",(user.email,))
     if cur.fetchone():
-        raise HTTPException(status_code=400, details="Email already exists")
+        raise HTTPException(status_code=400, detail="Email already exists")  # fixed "detail"
+    
     hashed_pw = hash_password(user.password)
-    cur.execute("INSERT INTO users (name, email, password_hash) VALUES (%s, %s, %s)", (user.name, user.email, hashed_pw))
+    cur.execute(
+        "INSERT INTO users (name, email, password_hash) VALUES (%s, %s, %s)", 
+        (user.name, user.email, hashed_pw)
+    )
     conn.commit()
     cur.close()
     conn.close()
@@ -41,6 +45,9 @@ def login_user(user: UserLogin):
     if not db_user or not verify_password(user.password, db_user[3]):
         raise HTTPException(status_code = 401, detail="Invalid email or password")
 
-    token = create_access_token({"sub":str(db_user[1]), "email":str(db_user[2])})
-    return {"access token": token, "token_type": "bearer"}
-
+    token = create_access_token({
+        "id": db_user[0], 
+        "sub": str(db_user[1]), 
+        "email": str(db_user[2])
+    })
+    return {"access_token": token, "token_type": "bearer"}  # fixed key
