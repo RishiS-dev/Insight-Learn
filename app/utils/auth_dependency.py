@@ -7,7 +7,7 @@ security = HTTPBearer()
 def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
     payload = decode_access_token(token)
-    print("DEBUG: Raw token received =", credentials.credentials)
+    print("DEBUG: Raw token received =", token)
 
     if payload is None:
         raise HTTPException(

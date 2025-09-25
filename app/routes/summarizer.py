@@ -15,7 +15,7 @@ def summarize_document(doc_id: int, user: dict = Depends(get_current_user)):
         doc = cur.fetchone()
 
         if not doc:
-            raise HTTPException(status_code=404, detail="Document not found or not yours")
+            raise HTTPException(status_code=404, detail="Document not found")
 
         text = doc[1]
         if not text:
