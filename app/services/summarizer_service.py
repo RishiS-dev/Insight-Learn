@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 def generate_summary(text: str) -> str:
     prompt = f"Summarize the following text in a clear and concise way:\n\n{text}"

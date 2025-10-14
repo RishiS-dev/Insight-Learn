@@ -4,6 +4,9 @@ from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
 from app.utils.auth_dependency import get_current_user
 from app.services.db_service import get_db_connection
 from app.services.pdf_service import extract_text_from_pdf
+from app.services.chunk_service import chunk_text
+from app.services.embedding_service import embed_text
+from app.services.faiss_service import save_faiss_index
 
 router = APIRouter(prefix="/documents", tags=["documents"])
 
@@ -31,10 +34,15 @@ def upload_document(file: UploadFile = File(...), user: dict = Depends(get_curre
         cur.close()
         con.close()
 
+        chunks = chunk_text(extracted_text)
+        embeddings = embed_text(chunks)
+        save_faiss_index(doc_id, embeddings, chunks)
+
         return {
-            "message": "Document uploaded successfully",
+            "message": "Document uploaded successfully & indexed successfully",
             "document_id": doc_id,
             "title": file.filename,
+            "number_of_chunks": len(chunks),
             "preview": extracted_text[:300] + "..." if len(extracted_text) > 300 else extracted_text
         }
     except Exception as e:

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.utils.auth_dependency import get_current_user
 from app.services.db_service import get_db_connection
 from app.services.flashcard_service import generate_flashcards
+import random
 
 router = APIRouter(prefix="/flashcards", tags=["Flashcards"])
 
@@ -58,6 +59,8 @@ def get_flashcards(doc_id: int, user: dict = Depends(get_current_user)):
         {"id": row[0], "question": row[1], "answer": row[2], "created_at": row[3]}
         for row in rows
     ]
+
+    random.shuffle(flashcards)
 
     return{
         "document_id": doc_id,
