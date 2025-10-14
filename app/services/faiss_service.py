@@ -12,7 +12,7 @@ def save_faiss_index(doc_id: int, embeddings, chunks):
 
     embeddings = np.array(embeddings).astype('float32')
 
-    index = faiss.IndexFlatIP(embeddings.shape[1]) #cosine similarity
+    index = faiss.IndexFlatIP(embeddings.shape[1])  # cosine similarity
     index.add(embeddings)
     faiss.write_index(index, index_path)
 
@@ -31,3 +31,23 @@ def load_faiss_index(doc_id: int):
         chunks = pickle.load(f)
 
     return index, chunks
+
+def delete_faiss_index(doc_id: int):
+    """
+    Delete FAISS index and metadata files for the given document.
+    """
+    index_path = os.path.join(BASE_INDEX_DIR, f"{doc_id}.index")
+    meta_path = os.path.join(BASE_INDEX_DIR, f"{doc_id}_meta.pkl")
+
+    try:
+        if os.path.exists(index_path):
+            os.remove(index_path)
+    except Exception:
+        # ignore file errors; DB delete should still proceed
+        pass
+
+    try:
+        if os.path.exists(meta_path):
+            os.remove(meta_path)
+    except Exception:
+        pass
