@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import auth, documents, summarizer, flashcards, chatbot
+from app.routes import auth, documents, summarizer, flashcards, chatbot, videos
 
 app = FastAPI(title="InsightLearn API")
 
@@ -23,6 +23,7 @@ app.include_router(documents.router)
 app.include_router(summarizer.router)
 app.include_router(flashcards.router)
 app.include_router(chatbot.router)
+app.include_router(videos.router) 
 
 @app.get("/")
 def root():
