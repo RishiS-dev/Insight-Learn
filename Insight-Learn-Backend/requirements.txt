@@ -4,3 +4,10 @@ psycopg2-binary
 python-dotenv 
 bcrypt 
 PyJWT
+python-multipart
+pymupdf
+numpy
+faiss-cpu
+sentence-transformers 
+nltk 
+google-generativeai
