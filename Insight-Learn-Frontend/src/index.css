@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-base-200 text-base-content font-sans antialiased;
+  }
+}
+
+/* Optional: thin scrollbar */
+@layer utilities {
+  .scroll-thin::-webkit-scrollbar { width: 6px; }
+  .scroll-thin::-webkit-scrollbar-track { @apply bg-base-300; }
+  .scroll-thin::-webkit-scrollbar-thumb { @apply bg-base-300 rounded-full; }
+}
