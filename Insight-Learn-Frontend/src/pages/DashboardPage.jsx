@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { listDocuments, uploadDocument, deleteDocument } from "../api/documents";
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
+import MotivationalQuoteCard from "../components/widgets/MotivationalCard";
 
 export default function DashboardPage() {
   const { data, refetch, isLoading } = useQuery({
@@ -39,6 +40,8 @@ export default function DashboardPage() {
           <input type="file" accept="application/pdf" className="hidden" onChange={onFile} disabled={uploading} />
         </label>
       </div>
+
+      <MotivationalQuoteCard />
 
       {isLoading && <p className="opacity-70">Loading...</p>}
 
